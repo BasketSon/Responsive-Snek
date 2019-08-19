@@ -36,7 +36,7 @@ function resizeCanvas () {
 }
 
 function appleSize () {
-  return canvas.height / 10 > 30 ? canvas.height / 10 : 30
+  return Math.max(canvas.height / 10, 30)
 }
 
 function loop () {
@@ -86,6 +86,8 @@ function loop () {
         tail = tailSafeZone;
         speed = baseSpeed;
         color = randomColor();
+        apples.clear();
+
 
         for (let cutTail of trail) {
           cutTail.color = 'red';
@@ -95,14 +97,8 @@ function loop () {
     }
   }
   drawApples();
+  eatApple();
 
-  for (let apple of apples) {
-      if (headCollision(apple, aw)) {
-        apples.delete(apple);
-        tail += ~~(aw - 25);
-        speed += ~~(aw / 700);
-      }
-    }
 
   frameID = requestAnimationFrame(loop)
 }
@@ -113,6 +109,16 @@ function headCollision (point, pointSide) {
          && py < point.y + pointSide
          && py + ph > point.y) {
     return true
+  }
+}
+
+function eatApple () {
+  for (let apple of apples) {
+    if (headCollision(apple, aw)) {
+      apples.delete(apple);
+      tail += ~~((aw - 20) / 2);
+      speed += ~~(aw / 7) / 100;
+    }
   }
 }
 
@@ -164,13 +170,15 @@ Apple.prototype.spawn = function () {
 }
 
 function spawnApples () {
-  let apple = new Apple();
-  apple.spawn();
+  if (apples.size < 10) {
+    let apple = new Apple();
+    apple.spawn();
+  }
   if (apples.size < 9 && ~~(Math.random() * 100) > 50) {
     let secondApple = new Apple();
     secondApple.spawn();
   }
-  if (apples.size < 10) setTimeout(spawnApples, 3000)
+   setTimeout(spawnApples, 3000)
 }
 
 function drawApples () {
