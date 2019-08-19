@@ -24,9 +24,7 @@ let
     cooldown      = false,
     score         = 0,
     frameID,
-    img = new Image;
-
-img.src = '../img/apple.png';
+    img = document.images[0];
 
 function resizeCanvas () {
   canvas.width = canvasWrapper.clientWidth;

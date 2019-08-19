@@ -9,3 +9,10 @@ body {
   width: 100%;
   height: 90vh;
 }
+
+.apple-preload {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
